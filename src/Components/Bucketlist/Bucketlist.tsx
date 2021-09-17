@@ -1,9 +1,13 @@
 import React from "react";
+import BucketlistItem from "./BucketlistItem";
 
 const Bucketlist = () => {
 
     return (
-        <div>Hello from Bucket List</div>
+        <div>
+            <h1>Bucket List:</h1>
+            <BucketlistItem/>
+        </div>
     );
 };
 
