@@ -9,6 +9,7 @@ import SearchContainer from "../SearchContainer/SearchContainer";
 import SummaryBox from "../SummaryBox/SummaryBox";
 import Accordions from "../Accordions/Accordions";
 import Footer from "../Footer/Footer";
+import Bucketlist from "../Bucketlist/Bucketlist";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
           </Main>
         </VisitedCountryContextProvider>
       </Wrapper>
+        <Wrapper><Bucketlist/></Wrapper>
       <Footer />
     </ThemeProvider>
   );
