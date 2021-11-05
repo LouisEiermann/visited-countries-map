@@ -17,6 +17,15 @@ const useLocalStorage = (key: string, initialValue: any) => {
         value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      if (valueToStore.length > 0) {
+        fetch("http://localhost:9000/saveState", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(valueToStore)
+        });
+      }
     } catch (error) {
       console.error(error);
     }
