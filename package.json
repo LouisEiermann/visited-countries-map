@@ -1,7 +1,7 @@
 {
   "name": "interactive-visited-countries-map-react",
   "version": "0.1.0",
-  "homepage": "http://localhost:9000/",
+  "homepage": "./build",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.0",
