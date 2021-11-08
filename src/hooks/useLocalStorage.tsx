@@ -5,6 +5,15 @@ const useLocalStorage = (key: string, initialValue: any) => {
     try {
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
+      /*fetch("http://localhost:9000/getState", {
+          method: "GET",
+        }).then((res) => {
+          res.json().then((res) => {
+            // @ts-ignore
+            let countries = Object.values(res)[0].countries;
+            setLocalStorage((countries) => {});
+          });
+        });*/
     } catch (err) {
       console.error(err);
       return initialValue;
@@ -19,11 +28,11 @@ const useLocalStorage = (key: string, initialValue: any) => {
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
       if (valueToStore.length > 0) {
         fetch("http://localhost:9000/saveState", {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify(valueToStore)
+          body: JSON.stringify(valueToStore),
         });
       }
     } catch (error) {

@@ -1,44 +1,56 @@
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const basicAuth = require('express-basic-auth')
-const { MongoClient } = require('mongodb');
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
+const basicAuth = require("express-basic-auth");
+const { MongoClient } = require("mongodb");
 
-const uri = "mongodb+srv://LouisEiermann:<password>@cluster0.owkc6.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-client.connect(err => {
-    const collection = client.db("test").collection("devices");
-    // perform actions on the collection object
-    client.close();
-});
+const client = new MongoClient(
+  `mongodb+srv://LouisEiermann:${process.env.DB_PASSWORD}@cluster0.owkc6.mongodb.net/bucketlist?retryWrites=true&w=majority`,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
-const app = express();
+async function connect() {
+  await client.connect();
+  console.log("connected to DB");
 
-app.use(cors({
-    origin: '*'
-}));
+  const app = express();
 
-app.use('/build',express.static(path.join(__dirname, '../build')));
+  app.use(
+    cors({
+      origin: "*",
+    })
+  );
 
-// app.use(basicAuth({
-//     challenge: true,
-//     users: { 'admin': 'supersecret' }
-// }))
+  app.use("/build", express.static(path.join(__dirname, "../build")));
 
-app.use(express.json())
+  // app.use(basicAuth({
+  //     challenge: true,
+  //     users: { 'admin': 'supersecret' }
+  // }))
 
-app.post("/saveState", (req, res) => {
-    console.log(req.body)
-    res.json({ message: "Hello from server!" });
-});
+  app.use(express.json());
 
-app.get("/getState", (req, res) => {
-    console.log(req.body)
-    res.json({ message: "Hello from server!" });
-});
+  app.post("/saveState", (req, res) => {
+    const collection = client.db("bucketlist").collection("countries");
+    let countriesDocument = { countries: req.body };
+    collection.replaceOne({}, countriesDocument, { upsert: true });
+  });
 
-app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, '../build/', "index.html"));
-});
+  app.get("/getState", (req, res) => {
+    const collection = client.db("bucketlist").collection("countries");
+    collection.findOne().then((document) => {
+      res.send({ visited: document });
+    });
+  });
 
-app.listen(9000);
+  app.get("*", function (req, res) {
+    res.sendFile(path.join(__dirname, "../build/", "index.html"));
+  });
+
+  app.listen(9000);
+}
+connect();
