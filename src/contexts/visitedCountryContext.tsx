@@ -52,14 +52,8 @@ interface IUpdateVisitedAfterRemove {
   };
 }
 export const dispatchFn = (object: IDispatchObj) => {
-  const {
-    type,
-    continent,
-    continentsState,
-    country,
-    payloadFn,
-    dispatchfn,
-  } = object;
+  const { type, continent, continentsState, country, payloadFn, dispatchfn } =
+    object;
   dispatchfn({
     type,
     continent,
@@ -92,10 +86,8 @@ const VisitedCountryContextProvider = ({ children }: Props) => {
   );
 
   const [visitedCountries, setVsitedCountries] = useState<ICountry[]>([]);
-  const [
-    countriesByContinent,
-    setCountriesByContinent,
-  ] = useState<CountriesByContinent | null>(null);
+  const [countriesByContinent, setCountriesByContinent] =
+    useState<CountriesByContinent | null>(null);
 
   const matchCountryAndContinent = (country: ICountry) => {
     const continentName = getContinentName(country) as ContinentsToShow;
@@ -115,6 +107,16 @@ const VisitedCountryContextProvider = ({ children }: Props) => {
 
   // SET INITIAL STATE WITH LOCALSTORAGE
   useEffect(() => {
+    fetch("http://localhost:9000/getState", {
+      method: "GET",
+    }).then((res) => {
+      res.json().then((res) => {
+        // @ts-ignore
+        let countries = Object.values(res)[0].countries;
+        setVsitedCountries(countries);
+        console.log("state set from DB");
+      });
+    });
     setVsitedCountries(storedValue);
     storedValue.map((country: ICountry) => matchCountryAndContinent(country));
     // eslint-disable-next-line react-hooks/exhaustive-deps
