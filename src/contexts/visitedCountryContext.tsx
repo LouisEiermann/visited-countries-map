@@ -114,7 +114,6 @@ const VisitedCountryContextProvider = ({ children }: Props) => {
         // @ts-ignore
         let countries = Object.values(res)[0].countries;
         setVsitedCountries(countries);
-        console.log("state set from DB");
       });
     });
     setVsitedCountries(storedValue);

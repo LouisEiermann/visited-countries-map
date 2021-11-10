@@ -34,6 +34,38 @@ async function connect() {
 
   app.use(express.json());
 
+  // Routes for manipulating the bucketlist items
+  app.post("/createitem", (req, res) => {
+    const collection = client.db("bucketlist").collection("listitems");
+    collection
+      .insertOne({ name: "test", activity: "test" })
+      .then((inserted) => {
+        console.log(inserted[0].id);
+      });
+  });
+
+  app.get("/readitems", (req, res) => {
+    const collection = client.db("bucketlist").collection("listitems");
+    collection
+      .find()
+      .toArray()
+      .then((data) => {
+        console.log(data);
+        res.send(JSON.stringify(data));
+      });
+  });
+
+  app.post("/updateitem", (req, res) => {
+    const collection = client.db("bucketlist").collection("listitems");
+    collection.replaceOne(req.body.id, req.body.item, { upsert: true });
+  });
+
+  app.post("/deleteitem", (req, res) => {
+    const collection = client.db("bucketlist").collection("listitems");
+    collection.deleteOne(req.body.id);
+  });
+
+  // Routes for manipulating the visited countries
   app.post("/saveState", (req, res) => {
     const collection = client.db("bucketlist").collection("countries");
     let countriesDocument = { countries: req.body };
