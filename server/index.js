@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const basicAuth = require("express-basic-auth");
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 
 const client = new MongoClient(
   `mongodb+srv://LouisEiermann:${process.env.DB_PASSWORD}@cluster0.owkc6.mongodb.net/bucketlist?retryWrites=true&w=majority`,
@@ -57,7 +57,8 @@ async function connect() {
 
   app.post("/deleteitem", (req, res) => {
     const collection = client.db("bucketlist").collection("listitems");
-    collection.deleteOne(req.body.id);
+    console.log(req.body);
+    collection.deleteOne({ _id: ObjectId(req.body._id) });
   });
 
   // Routes for manipulating the visited countries
