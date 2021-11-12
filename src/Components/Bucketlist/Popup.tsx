@@ -2,22 +2,30 @@ import styles from "./style.module.css";
 import React from "react";
 
 const Popup = (props) => {
-  const initialData = Object.freeze({
+  const initialData = {
+    _id: null,
     activity: "",
     done: false,
-  });
+  };
 
-  const [data, updateData] = React.useState(initialData);
+  if (props.popuptype === "edit") {
+    initialData._id = props.listitem._id;
+    initialData.activity = props.listitem.activity;
+    initialData.done = props.listitem.done;
+  }
+
+  const [listitem, updateListitem] = React.useState(initialData);
   const closePopup = () => {
     props.closePopup(false);
   };
 
   const handleChange = (e) => {
-    updateData({
-      ...data,
+    updateListitem({
+      ...listitem,
       // Trimming any whitespace
-      [e.target.name]: e.target.value.trim(),
+      activity: e.target.value.trim(),
     });
+    console.log(listitem);
   };
 
   const submitActivity = (e) => {
@@ -28,7 +36,21 @@ const Popup = (props) => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(listitem),
+    });
+    closePopup();
+  };
+
+  const updateActivity = (e) => {
+    e.preventDefault();
+    console.log(listitem);
+    fetch("http://localhost:9000/updateitem", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(listitem),
     });
     closePopup();
   };
@@ -62,9 +84,9 @@ const Popup = (props) => {
         <input
           type="text"
           onChange={handleChange}
-          value={props.listitem.activity}
+          defaultValue={props.listitem.activity}
         />
-        <button onClick={submitActivity}>Save</button>
+        <button onClick={updateActivity}>Save</button>
         <button onClick={deleteActivity}>Delete</button>
         <button onClick={closePopup}>Close</button>
       </div>

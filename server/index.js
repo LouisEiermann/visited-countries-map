@@ -52,12 +52,21 @@ async function connect() {
 
   app.post("/updateitem", (req, res) => {
     const collection = client.db("bucketlist").collection("listitems");
-    collection.replaceOne(req.body.id, req.body.item, { upsert: true });
+    console.log(req.body);
+    collection.replaceOne(
+      { _id: ObjectId(req.body._id) },
+      {
+        activity: req.body.activity,
+        done: req.body.done,
+      },
+      {
+        upsert: true,
+      }
+    );
   });
 
   app.post("/deleteitem", (req, res) => {
     const collection = client.db("bucketlist").collection("listitems");
-    console.log(req.body);
     collection.deleteOne({ _id: ObjectId(req.body._id) });
   });
 

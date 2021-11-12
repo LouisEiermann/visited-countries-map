@@ -11,7 +11,6 @@ const Bucketlist = () => {
   useEffect(() => {
     fetch("http://localhost:9000/readitems", { method: "GET" }).then((res) => {
       res.json().then((data) => {
-        console.log(data);
         setListItems(data);
       });
     });

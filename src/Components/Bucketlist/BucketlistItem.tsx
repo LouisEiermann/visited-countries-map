@@ -5,10 +5,11 @@ const BucketlistItem = (props) => {
   const openPopup = () => {
     props.openPopup(props.listitem);
   };
+
   return (
     <div className={styles.itemContainer}>
       <div>{props.listitem.activity}</div>
-      <input type="checkbox" checked={props.listitem.done} />
+      <input type="checkbox" defaultChecked={props.listitem.done} />
       <button onClick={openPopup}>Edit</button>
     </div>
   );
