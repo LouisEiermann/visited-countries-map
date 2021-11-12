@@ -37,11 +37,7 @@ async function connect() {
   // Routes for manipulating the bucketlist items
   app.post("/createitem", (req, res) => {
     const collection = client.db("bucketlist").collection("listitems");
-    collection
-      .insertOne({ name: "test", activity: "test" })
-      .then((inserted) => {
-        console.log(inserted[0].id);
-      });
+    collection.insertOne({ activity: req.body.activity, done: req.body.done });
   });
 
   app.get("/readitems", (req, res) => {
@@ -50,7 +46,6 @@ async function connect() {
       .find()
       .toArray()
       .then((data) => {
-        console.log(data);
         res.send(JSON.stringify(data));
       });
   });

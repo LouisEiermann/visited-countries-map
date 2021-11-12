@@ -1,5 +1,35 @@
 .container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.itemContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #fff;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+button {
+    background-color: transparent;
+    color: #fff;
+    padding: 1rem;
+    border: 1px solid #fff;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.popup {
+    width: 30vw;
+    height: 50vh;
+    color: #fff;
+    background-color: #000;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
 }
