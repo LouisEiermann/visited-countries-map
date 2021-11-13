@@ -52,7 +52,6 @@ async function connect() {
 
   app.post("/updateitem", (req, res) => {
     const collection = client.db("bucketlist").collection("listitems");
-    console.log(req.body);
     collection.replaceOne(
       { _id: ObjectId(req.body._id) },
       {

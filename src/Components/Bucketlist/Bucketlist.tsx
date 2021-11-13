@@ -19,6 +19,7 @@ const Bucketlist = () => {
     <div className={styles.container}>
       <h1>Bucket List</h1>
       <button
+        className={styles.addActivityButton}
         onClick={() => {
           setPopup(true);
           setPopupType("add");

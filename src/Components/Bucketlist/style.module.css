@@ -1,17 +1,23 @@
 .container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
 }
 
 .itemContainer {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     border: 1px solid #fff;
     padding: 1rem;
     margin: 1rem;
+    border-radius: 1rem;
+}
+
+.itemContainer * {
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 button {
@@ -23,13 +29,36 @@ button {
     cursor: pointer;
 }
 
+.addActivityButton {
+    margin-bottom: 3rem;
+}
+
 .popup {
-    width: 30vw;
-    height: 50vh;
+    width: 50vw;
     color: #fff;
     background-color: #000;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+    border-radius: 1rem;
+    border: 1px solid #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2rem;
+}
+
+.popup * {
+    margin: 1rem;
+}
+
+input {
+    background-color: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 10px;
 }

@@ -70,7 +70,7 @@ const Popup = (props) => {
 
   if (props.popuptype === "add") {
     return (
-      <div className={styles.popup + " " + styles.container}>
+      <div className={styles.popup}>
         <div>Add Activity</div>
         <input type="text" name="activity" onChange={handleChange} />
         <button onClick={submitActivity}>Save</button>
@@ -79,7 +79,7 @@ const Popup = (props) => {
     );
   } else {
     return (
-      <div className={styles.popup + " " + styles.container}>
+      <div className={styles.popup}>
         <div>Edit Activity</div>
         <input
           type="text"
