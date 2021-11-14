@@ -4,6 +4,7 @@ import GlobalStyle from "../../theme/global";
 import { Wrapper, Main } from "./style";
 import AppBar from "../AppBar/AppBar";
 import VisitedCountryContextProvider from "../../contexts/visitedCountryContext";
+import { BucketListItemsProvider } from "../../contexts/bucketListItemsContext";
 import MapContainer from "../MapContainer/MapContainer";
 import SearchContainer from "../SearchContainer/SearchContainer";
 import SummaryBox from "../SummaryBox/SummaryBox";
@@ -26,7 +27,9 @@ const App = () => {
         </VisitedCountryContextProvider>
       </Wrapper>
       <Wrapper>
-        <Bucketlist />
+        <BucketListItemsProvider>
+          <Bucketlist />
+        </BucketListItemsProvider>
       </Wrapper>
     </ThemeProvider>
   );

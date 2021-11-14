@@ -37,7 +37,11 @@ async function connect() {
   // Routes for manipulating the bucketlist items
   app.post("/createitem", (req, res) => {
     const collection = client.db("bucketlist").collection("listitems");
-    collection.insertOne({ activity: req.body.activity, done: req.body.done });
+    const document = collection.insertOne({
+      activity: req.body.activity,
+      done: req.body.done,
+    });
+    res.send({ item: document });
   });
 
   app.get("/readitems", (req, res) => {
@@ -62,11 +66,13 @@ async function connect() {
         upsert: true,
       }
     );
+    res.send("updated item");
   });
 
   app.post("/deleteitem", (req, res) => {
     const collection = client.db("bucketlist").collection("listitems");
     collection.deleteOne({ _id: ObjectId(req.body._id) });
+    res.send("deleted item");
   });
 
   // Routes for manipulating the visited countries

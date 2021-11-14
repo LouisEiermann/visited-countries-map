@@ -2,16 +2,25 @@ import React, { useEffect, useState } from "react";
 import BucketlistItem from "./BucketlistItem";
 import styles from "./style.module.css";
 import Popup from "./Popup";
+import { BucketListItemsContext } from "../../contexts/bucketListItemsContext";
 
 const Bucketlist = () => {
-  const [listitems, setListItems] = useState<any[]>([]);
   const [popup, setPopup] = useState(false);
   const [popupType, setPopupType] = useState("");
-  const [listitem, setListitem] = useState({});
+  const [itemToEdit, setItemToEdit] = useState({});
+  //@ts-ignore
+  const [state, dispatch] = React.useContext(BucketListItemsContext);
+  const updateData = () => {
+    fetch("http://localhost:9000/readitems", { method: "GET" }).then((res) => {
+      res.json().then((data) => {
+        dispatch({ type: "add_all", payload: data });
+      });
+    });
+  };
   useEffect(() => {
     fetch("http://localhost:9000/readitems", { method: "GET" }).then((res) => {
       res.json().then((data) => {
-        setListItems(data);
+        dispatch({ type: "add_all", payload: data });
       });
     });
   }, []);
@@ -27,7 +36,7 @@ const Bucketlist = () => {
       >
         Add Activity
       </button>
-      {listitems.map((listitem) => {
+      {state.items.map((listitem) => {
         return (
           <BucketlistItem
             key={listitem._id}
@@ -35,17 +44,20 @@ const Bucketlist = () => {
             openPopup={(e) => {
               setPopup(true);
               setPopupType("edit");
-              setListitem(listitem);
+              setItemToEdit(e);
             }}
           />
         );
       })}
       {popup ? (
         <Popup
+          listitem={itemToEdit}
           popuptype={popupType}
-          listitem={listitem}
           closePopup={(e) => {
             setPopup(false);
+          }}
+          updateData={(e) => {
+            updateData();
           }}
         />
       ) : null}

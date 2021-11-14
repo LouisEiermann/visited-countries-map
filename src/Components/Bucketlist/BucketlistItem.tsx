@@ -9,7 +9,11 @@ const BucketlistItem = (props) => {
   return (
     <div className={styles.itemContainer}>
       <div>{props.listitem.activity}</div>
-      <input type="checkbox" defaultChecked={props.listitem.done} />
+      <input
+        type="checkbox"
+        defaultChecked={props.listitem.done}
+        className={styles.checkbox}
+      />
       <button onClick={openPopup}>Edit</button>
     </div>
   );

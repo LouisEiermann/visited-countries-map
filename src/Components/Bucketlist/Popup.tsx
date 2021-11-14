@@ -1,5 +1,6 @@
 import styles from "./style.module.css";
 import React from "react";
+import { BucketListItemsContext } from "../../contexts/bucketListItemsContext";
 
 const Popup = (props) => {
   const initialData = {
@@ -8,13 +9,22 @@ const Popup = (props) => {
     done: false,
   };
 
+  const [listitem, updateListitem] = React.useState(initialData);
+  //@ts-ignore
+  const [state, dispatch] = React.useContext(BucketListItemsContext);
+
   if (props.popuptype === "edit") {
     initialData._id = props.listitem._id;
     initialData.activity = props.listitem.activity;
     initialData.done = props.listitem.done;
   }
 
-  const [listitem, updateListitem] = React.useState(initialData);
+  const updateData = () => {
+    setTimeout(() => {
+      props.updateData();
+    }, 100);
+  };
+
   const closePopup = () => {
     props.closePopup(false);
   };
@@ -25,11 +35,9 @@ const Popup = (props) => {
       // Trimming any whitespace
       activity: e.target.value.trim(),
     });
-    console.log(listitem);
   };
 
-  const submitActivity = (e) => {
-    e.preventDefault();
+  const createActivity = (e) => {
     fetch("http://localhost:9000/createitem", {
       method: "POST",
       headers: {
@@ -37,13 +45,13 @@ const Popup = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(listitem),
+    }).then((r) => {
+      updateData();
+      closePopup();
     });
-    closePopup();
   };
 
   const updateActivity = (e) => {
-    e.preventDefault();
-    console.log(listitem);
     fetch("http://localhost:9000/updateitem", {
       method: "POST",
       headers: {
@@ -51,12 +59,13 @@ const Popup = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(listitem),
+    }).then((r) => {
+      updateData();
+      closePopup();
     });
-    closePopup();
   };
 
   const deleteActivity = (e) => {
-    e.preventDefault();
     fetch("http://localhost:9000/deleteitem", {
       method: "POST",
       headers: {
@@ -64,8 +73,10 @@ const Popup = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(props.listitem),
+    }).then((r) => {
+      updateData();
+      closePopup();
     });
-    closePopup();
   };
 
   if (props.popuptype === "add") {
@@ -73,7 +84,7 @@ const Popup = (props) => {
       <div className={styles.popup}>
         <div>Add Activity</div>
         <input type="text" name="activity" onChange={handleChange} />
-        <button onClick={submitActivity}>Save</button>
+        <button onClick={createActivity}>Save</button>
         <button onClick={closePopup}>Close</button>
       </div>
     );
