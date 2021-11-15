@@ -5,13 +5,10 @@ const path = require("path");
 session = require("express-session");
 const { MongoClient, ObjectId } = require("mongodb");
 
-const client = new MongoClient(
-  `mongodb+srv://LouisEiermann:${process.env.DB_PASSWORD}@cluster0.owkc6.mongodb.net/bucketlist?retryWrites=true&w=majority`,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+const client = new MongoClient(process.env.DB_CONNECTION_STRING, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 async function connect() {
   await client.connect();
