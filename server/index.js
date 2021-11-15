@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const basicAuth = require("express-basic-auth");
+session = require("express-session");
 const { MongoClient, ObjectId } = require("mongodb");
 
 const client = new MongoClient(
@@ -15,22 +15,53 @@ const client = new MongoClient(
 
 async function connect() {
   await client.connect();
-  console.log("connected to DB");
 
   const app = express();
 
-  app.use(
+  /*app.use(
     cors({
       origin: "*",
     })
+  );*/
+
+  app.use(
+    session({
+      secret: "2C44-4D44-WppQ38S",
+      resave: true,
+      saveUninitialized: true,
+    })
   );
 
-  app.use("/build", express.static(path.join(__dirname, "../build")));
+  // Authentication and Authorization Middleware
+  let auth = function (req, res, next) {
+    if (
+      req.session &&
+      req.session.user === process.env.SESSION_USERNAME &&
+      req.session.admin
+    )
+      return next();
+    else return res.sendStatus(401);
+  };
 
-  // app.use(basicAuth({
-  //     challenge: true,
-  //     users: { 'admin': 'supersecret' }
-  // }))
+  app.get("/login", function (req, res) {
+    if (!req.query.username || !req.query.password) {
+      res.send("login failed");
+    } else if (
+      req.query.username === process.env.SESSION_USERNAME &&
+      req.query.password === process.env.SESSION_PASSWORD.split(" ")
+    ) {
+      req.session.user = req.query.username;
+      req.session.admin = true;
+      res.send("login success!");
+    }
+  });
+
+  app.get("/logout", function (req, res) {
+    req.session.destroy();
+    res.send("logout success!");
+  });
+
+  app.use("/build", express.static(path.join(__dirname, "../build")));
 
   app.use(express.json());
 
@@ -76,7 +107,7 @@ async function connect() {
   });
 
   // Routes for manipulating the visited countries
-  app.post("/saveState", (req, res) => {
+  app.post("/saveState", (req) => {
     const collection = client.db("bucketlist").collection("countries");
     let countriesDocument = { countries: req.body };
     collection.replaceOne({}, countriesDocument, { upsert: true });
@@ -89,10 +120,10 @@ async function connect() {
     });
   });
 
-  app.get("*", function (req, res) {
+  app.get("*", auth, function (req, res) {
     res.sendFile(path.join(__dirname, "../build/", "index.html"));
   });
 
   app.listen(9000);
 }
-connect();
+connect().then(() => console.log("connected to DB"));

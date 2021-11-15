@@ -12,6 +12,10 @@ const appTitle: string = "Visited Countries Map";
 const AppBar = () => {
   const { toggleTheme, isDarkTheme } = useContext(ThemeContext);
 
+  const logout = () => {
+    window.location.href = "/logout";
+  };
+
   let buttonText, buttonIcon;
 
   switch (isDarkTheme) {
@@ -30,6 +34,9 @@ const AppBar = () => {
       <Header>
         <HowToUse title={appTitle} />
         <Heading title={appTitle} />
+        <Button name="mode" onClick={logout}>
+          Logout
+        </Button>
         <Button
           name="mode"
           icon={buttonIcon}
