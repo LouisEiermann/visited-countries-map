@@ -15,6 +15,9 @@ async function connect() {
 
   const app = express();
 
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+
   /*app.use(
     cors({
       origin: "*",
@@ -37,30 +40,44 @@ async function connect() {
       req.session.admin
     )
       return next();
-    else return res.sendStatus(401);
+    else return res.redirect("/login");
   };
 
-  app.get("/login", function (req, res) {
-    if (!req.query.username || !req.query.password) {
-      res.send("login failed");
+  app.post("/auth", function (req, res) {
+    if (!req.body.username || !req.body.password) {
+      res.redirect("/login");
     } else if (
-      req.query.username === process.env.SESSION_USERNAME &&
-      req.query.password === process.env.SESSION_PASSWORD.split(" ")
+      (req.body.username === process.env.SESSION_USERNAME &&
+        req.body.password === process.env.SESSION_PASSWORD.split(",")[0]) ||
+      req.body.password === process.env.SESSION_PASSWORD.split(",")[1]
     ) {
-      req.session.user = req.query.username;
+      req.session.user = req.body.username;
       req.session.admin = true;
-      res.send("login success!");
+      res.redirect("/");
+    } else {
+      res.redirect("/login");
+    }
+  });
+
+  app.get("/login", function (req, res) {
+    if (!req.body.username || !req.body.password) {
+      res.sendFile(path.join(__dirname, "./", "login.html"));
+    } else if (
+      req.body.username === process.env.SESSION_USERNAME &&
+      req.body.password === process.env.SESSION_PASSWORD.split(" ")
+    ) {
+      req.session.user = req.body.username;
+      req.session.admin = true;
+      res.redirect("/");
     }
   });
 
   app.get("/logout", function (req, res) {
     req.session.destroy();
-    res.send("logout success!");
+    res.redirect("/login");
   });
 
   app.use("/build", express.static(path.join(__dirname, "../build")));
-
-  app.use(express.json());
 
   // Routes for manipulating the bucketlist items
   app.post("/createitem", (req, res) => {
@@ -117,7 +134,7 @@ async function connect() {
     });
   });
 
-  app.get("*", auth, function (req, res) {
+  app.get("/", auth, function (req, res) {
     res.sendFile(path.join(__dirname, "../build/", "index.html"));
   });
 
