@@ -1,6 +1,9 @@
 {
   "name": "interactive-visited-countries-map-react",
   "version": "0.1.0",
+  "engines": {
+    "node": "14.x"
+  },
   "homepage": "./build",
   "private": true,
   "dependencies": {
