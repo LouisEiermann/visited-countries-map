@@ -31,8 +31,8 @@
     "webfontloader": "^1.6.28"
   },
   "scripts": {
-    "prod": "node server/index.js",
-    "start": "react-scripts start",
+    "start": "node server/index.js",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "predeploy": "yarn run build",
     "deploy": "gh-pages -b master -d build",
