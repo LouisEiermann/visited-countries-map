@@ -138,6 +138,10 @@ async function connect() {
     res.sendFile(path.join(__dirname, "../build/", "index.html"));
   });
 
-  app.listen(9000);
+  const PORT = process.env.PORT || 9000;
+
+  app.listen(PORT, () => {
+    console.log(`server started on port ${PORT}`);
+  });
 }
 connect().then(() => console.log("connected to DB"));
