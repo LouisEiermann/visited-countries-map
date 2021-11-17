@@ -46,6 +46,9 @@ const Bucketlist = () => {
               setPopupType("edit");
               setItemToEdit(e);
             }}
+            updateData={(e) => {
+              updateData();
+            }}
           />
         );
       })}

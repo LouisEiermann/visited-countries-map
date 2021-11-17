@@ -1,6 +1,5 @@
 import styles from "./style.module.css";
 import React from "react";
-import { BucketListItemsContext } from "../../contexts/bucketListItemsContext";
 
 const Popup = (props) => {
   const initialData = {
@@ -10,8 +9,6 @@ const Popup = (props) => {
   };
 
   const [listitem, updateListitem] = React.useState(initialData);
-  //@ts-ignore
-  const [state, dispatch] = React.useContext(BucketListItemsContext);
 
   if (props.popuptype === "edit") {
     initialData._id = props.listitem._id;
@@ -37,7 +34,7 @@ const Popup = (props) => {
     });
   };
 
-  const createActivity = (e) => {
+  const createActivity = () => {
     fetch("/createitem", {
       method: "POST",
       headers: {
@@ -51,7 +48,7 @@ const Popup = (props) => {
     });
   };
 
-  const updateActivity = (e) => {
+  const updateActivity = () => {
     fetch("/updateitem", {
       method: "POST",
       headers: {
@@ -59,13 +56,13 @@ const Popup = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(listitem),
-    }).then((r) => {
+    }).then(() => {
       updateData();
       closePopup();
     });
   };
 
-  const deleteActivity = (e) => {
+  const deleteActivity = () => {
     fetch("/deleteitem", {
       method: "POST",
       headers: {
