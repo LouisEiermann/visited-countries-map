@@ -38,7 +38,7 @@ const Popup = (props) => {
   };
 
   const createActivity = (e) => {
-    fetch("http://localhost:9000/createitem", {
+    fetch("/createitem", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -52,7 +52,7 @@ const Popup = (props) => {
   };
 
   const updateActivity = (e) => {
-    fetch("http://localhost:9000/updateitem", {
+    fetch("/updateitem", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -66,7 +66,7 @@ const Popup = (props) => {
   };
 
   const deleteActivity = (e) => {
-    fetch("http://localhost:9000/deleteitem", {
+    fetch("/deleteitem", {
       method: "POST",
       headers: {
         Accept: "application/json",

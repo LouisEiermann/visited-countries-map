@@ -60,8 +60,28 @@ async function connect() {
   });
 
   app.get("/login", function (req, res) {
+    const html = `
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <title>Bucketlist Login</title>
+      </head>
+      <body>
+        <form action="/auth" method="post">
+          <h2>Login</h2>
+          <div class="input-field">
+              <input type="text" name="username" id="username" placeholder="Enter Username">
+          </div>
+          <div class="input-field">
+              <input type="password" name="password" id="password" placeholder="Enter Password">
+          </div>
+          <input type="submit" value="Login">
+        </form>   
+      </body>
+    </html>
+  `;
     if (!req.body.username || !req.body.password) {
-      res.sendFile(path.join(__dirname, "./", "login.html"));
+      res.send(html);
     } else if (
       req.body.username === process.env.SESSION_USERNAME &&
       req.body.password === process.env.SESSION_PASSWORD.split(" ")

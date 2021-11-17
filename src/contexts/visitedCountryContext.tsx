@@ -107,7 +107,7 @@ const VisitedCountryContextProvider = ({ children }: Props) => {
 
   // SET INITIAL STATE WITH LOCALSTORAGE
   useEffect(() => {
-    fetch("http://localhost:9000/getState", {
+    fetch("/getState", {
       method: "GET",
     }).then((res) => {
       res.json().then((res) => {
