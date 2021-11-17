@@ -11,14 +11,14 @@ const Bucketlist = () => {
   //@ts-ignore
   const [state, dispatch] = React.useContext(BucketListItemsContext);
   const updateData = () => {
-    fetch("http://localhost:9000/readitems", { method: "GET" }).then((res) => {
+    fetch("/readitems", { method: "GET" }).then((res) => {
       res.json().then((data) => {
         dispatch({ type: "add_all", payload: data });
       });
     });
   };
   useEffect(() => {
-    fetch("http://localhost:9000/readitems", { method: "GET" }).then((res) => {
+    fetch("/readitems", { method: "GET" }).then((res) => {
       res.json().then((data) => {
         dispatch({ type: "add_all", payload: data });
       });
