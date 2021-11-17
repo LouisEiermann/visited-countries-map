@@ -6,6 +6,7 @@ import HowToUse from "../HowToUse/HowToUse";
 import Button from "../Button/Button";
 import { MoonOutline } from "@styled-icons/evaicons-outline/MoonOutline";
 import { Sun } from "@styled-icons/boxicons-regular/Sun";
+import styles from "./style.module.css";
 
 const appTitle: string = "Visited Countries Map";
 
@@ -34,9 +35,9 @@ const AppBar = () => {
       <Header>
         <HowToUse title={appTitle} />
         <Heading title={appTitle} />
-        <Button name="mode" onClick={logout}>
+        <button name="mode" onClick={logout} className={styles.button}>
           Logout
-        </Button>
+        </button>
         <Button
           name="mode"
           icon={buttonIcon}
